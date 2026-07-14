@@ -54,3 +54,4 @@ La protección incluida limita tamaño y frecuencia por instancia y añade un ho
 Los textos editables se concentran en `assets/content.js`. Cada modificación debe ir seguida de `npm run build`; el sitemap y todas las páginas localizadas se regeneran automáticamente.
 
 <!-- desplegar corrección visual -->
+<!-- activar integración Vercel -->
