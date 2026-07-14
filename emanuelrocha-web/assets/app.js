@@ -31,6 +31,7 @@ const elements = {
 };
 
 let currentLang = document.documentElement.lang === "es" ? "es" : "ca";
+let preferredLang = currentLang;
 let currentPage = routeFromPath(location.pathname) ?? pageFor(currentLang, "home");
 let currentIntent = new URLSearchParams(location.search).get("intent") === "B" ? "B" : "A";
 let narrativeObserver = null;
@@ -291,6 +292,52 @@ function toggleLanguageMenu() {
     else openLanguageMenu();
 }
 
+function triggerFooterLockout() {
+    elements.footer.classList.add("footer-resting");
+    setTimeout(() => elements.footer.classList.remove("footer-resting"), 400);
+}
+
+function switchLanguage(lang) {
+    if (lang === currentLang) {
+        closeLanguageMenu(true);
+        return;
+    }
+
+    const targets = [
+        elements.brandTag,
+        elements.welcomeProse,
+        elements.backButton,
+        elements.contactButton,
+        elements.welcomeTitle,
+        elements.cancelButton,
+        document.getElementById("contact-prose-text"),
+        elements.operationsIntro,
+        elements.languageToggle,
+        elements.operationsButton,
+        elements.narrative
+    ];
+
+    preferredLang = lang;
+    closeLanguageMenu(false);
+    targets.forEach((element) => {
+        element.classList.remove("lang-materializing");
+        element.classList.add("lang-evaporating");
+    });
+
+    setTimeout(() => {
+        navigate(currentPage.key, { lang, intent: currentIntent, replace: true });
+        targets.forEach((element) => {
+            element.classList.remove("lang-evaporating");
+            element.classList.add("lang-materializing");
+        });
+
+        setTimeout(() => {
+            targets.forEach((element) => element.classList.remove("lang-materializing"));
+            triggerFooterLockout();
+        }, 350);
+    }, 150);
+}
+
 function markInvalid(input, invalid) {
     input.classList.toggle("input-error", invalid);
     input.setAttribute("aria-invalid", String(invalid));
@@ -360,8 +407,7 @@ document.addEventListener("click", (event) => {
     if (action === "folder") toggleFolder(target);
     if (action === "language-menu") toggleLanguageMenu();
     if (action === "language") {
-        closeLanguageMenu(false);
-        navigate(currentPage.key, { lang, intent: currentIntent });
+        switchLanguage(lang);
     }
 });
 
@@ -378,8 +424,17 @@ elements.name.addEventListener("input", () => markInvalid(elements.name, false))
 elements.email.addEventListener("input", () => markInvalid(elements.email, false));
 
 window.addEventListener("popstate", () => {
-    const page = routeFromPath(location.pathname) ?? pageFor(currentLang, "home");
+    let page = routeFromPath(location.pathname) ?? pageFor(preferredLang, "home");
     currentIntent = new URLSearchParams(location.search).get("intent") === "B" ? "B" : "A";
+    if (page.lang !== preferredLang) {
+        page = pageFor(preferredLang, page.key) ?? pageFor(preferredLang, "home");
+        const query = page.key === "contact" ? `?intent=${currentIntent}` : "";
+        history.replaceState(
+            { key: page.key, lang: preferredLang, intent: currentIntent },
+            "",
+            `${routeUrl(preferredLang, page.key)}${query}`
+        );
+    }
     renderPage(page, { focus: true });
 });
 

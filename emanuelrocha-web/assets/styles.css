@@ -88,7 +88,7 @@
         [data-state="narrative"] .main-header,
         [data-state="contact"] .main-header,
         [data-state="operations"] .main-header {
-            opacity: 0.82;
+            opacity: 0.47;
             pointer-events: auto; 
             transform: translateY(0);
             
@@ -372,7 +372,7 @@
             font-weight: 700;
             letter-spacing: 0.1em;
             color: var(--text-featured);
-            opacity: 0.82;
+            opacity: 0.5;
             width: 32px;
         }
 
@@ -392,7 +392,7 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: var(--text-featured);
-            opacity: 0.82;
+            opacity: 0.4;
             transition: opacity 0.3s ease;
         }
 
@@ -492,8 +492,8 @@
             margin: 0; 
             scroll-snap-align: center;
             scroll-snap-stop: always; 
-            opacity: 0.82;
-            filter: blur(0.5px);
+            opacity: 0.025;
+            filter: blur(1.25px);
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             color: var(--text-main);
             letter-spacing: -0.01em;
@@ -529,14 +529,14 @@
             font-size: inherit;
             font-weight: 400;
             color: var(--text-main);
-            opacity: 0.82;
+            opacity: 0.22;
             cursor: pointer;
             transition: opacity 0.3s ease, font-weight 0.3s ease;
             padding: 0 2px;
         }
 
         .form-choice-btn.is-active { opacity: 1; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
-        .form-slash { opacity: 0.82; padding: 0 4px; font-weight: 400; }
+        .form-slash { opacity: 0.22; padding: 0 4px; font-weight: 400; }
         #form-dynamic-tail { transition: opacity 0.25s ease; opacity: 1; }
 
         .contact-form { display: contents; }
@@ -587,7 +587,7 @@
         body[data-state="narrative"] .main-footer,
         body[data-state="contact"] .main-footer,
         body[data-state="operations"] .main-footer {
-            opacity: 0.82;
+            opacity: 0.47;
             pointer-events: auto; 
             transform: translateY(0);
             transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
@@ -663,7 +663,6 @@
             opacity: 0;
             transform: translateX(8px);
             pointer-events: none;
-            visibility: hidden;
             will-change: transform, opacity;
             transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -678,7 +677,6 @@
             opacity: 1;
             transform: translateX(0);
             pointer-events: auto;
-            visibility: visible;
         }
 
         .lang-divider-dot {
